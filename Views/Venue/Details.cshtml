@@ -1,0 +1,49 @@
+@model EventEase.Models.Venue
+@{ ViewData["Title"] = "Venue Details"; }
+
+<div class="page-heading">
+    <h1>Venue <span class="accent">Details</span></h1>
+    <a asp-action="Index" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="details-card">
+    <div class="detail-grid">
+        <div class="detail-header">
+            <span class="detail-header-title">@Model.VenueName</span>
+            <span class="badge bg-primary">ID #@Model.VenueID</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Venue Name</span>
+            <span class="dd">@Model.VenueName</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Location</span>
+            <span class="dd">@Model.Location</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Capacity</span>
+            <span class="dd">@Model.Capacity.ToString("N0") guests</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Image URL</span>
+            <span class="dd" style="word-break:break-all; font-size:0.82rem; color:var(--text-muted)">
+                @(string.IsNullOrEmpty(Model.ImageUrl) ? "No image set" : Model.ImageUrl)
+            </span>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="detail-row">
+                <span class="dt">Preview</span>
+                <span class="dd">
+                    <img src="@Model.ImageUrl" alt="@Model.VenueName" style="width:160px; height:110px; object-fit:cover; border-radius:10px; border:1px solid var(--border);"
+                         onerror="this.style.display='none'" />
+                </span>
+            </div>
+        }
+    </div>
+    <div class="detail-actions">
+        <a asp-action="Edit" asp-route-id="@Model.VenueID" class="btn btn-primary">Edit Venue</a>
+        <a asp-action="Delete" asp-route-id="@Model.VenueID" class="btn btn-outline-danger">Delete</a>
+        <a asp-action="Index" class="btn btn-secondary">All Venues</a>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+@model EventEase.Models.Venue
+@{ ViewData["Title"] = "Delete Venue"; }
+
+<div class="page-heading">
+    <h1>Delete <span class="accent">Venue</span></h1>
+</div>
+
+@if ((bool)ViewBag.HasBookings)
+{
+    <div class="delete-card">
+        <span class="delete-warning-icon">⚠️</span>
+        <h2 style="margin-bottom:0.5rem">Cannot Delete Venue</h2>
+        <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.9rem">
+            <strong style="color:var(--text-primary)">@Model.VenueName</strong> has active bookings associated with it.
+            Please cancel or remove those bookings before deleting this venue.
+        </p>
+        <div class="d-flex gap-2">
+            <a asp-action="Index" class="btn btn-secondary">← Back to Venues</a>
+            <a asp-controller="Booking" asp-action="Index" class="btn btn-outline-primary">View Bookings</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="delete-card">
+        <span class="delete-warning-icon">🗑️</span>
+        <h2 style="margin-bottom:0.5rem">Are you sure?</h2>
+        <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.9rem">
+            You are about to permanently delete <strong style="color:var(--text-primary)">@Model.VenueName</strong>.
+            This action cannot be undone.
+        </p>
+        <div class="details-card" style="margin-bottom:1.5rem; max-width:100%">
+            <div class="detail-grid">
+                <div class="detail-row">
+                    <span class="dt">Venue Name</span>
+                    <span class="dd">@Model.VenueName</span>
+                </div>
+                <div class="detail-row">
+                    <span class="dt">Location</span>
+                    <span class="dd">@Model.Location</span>
+                </div>
+                <div class="detail-row">
+                    <span class="dt">Capacity</span>
+                    <span class="dd">@Model.Capacity.ToString("N0") guests</span>
+                </div>
+            </div>
+        </div>
+        <form asp-action="Delete" class="d-flex gap-2">
+            <input type="hidden" asp-for="VenueID" />
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+}

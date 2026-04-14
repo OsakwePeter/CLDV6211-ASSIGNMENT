@@ -1,0 +1,54 @@
+@model IEnumerable<EventEase.Models.Venue>
+@{ ViewData["Title"] = "Venues"; }
+
+<div class="page-heading">
+    <div class="page-heading-left">
+        <h1>Venues</h1>
+        <p class="page-subtitle">All registered venue spaces</p>
+    </div>
+    <a asp-action="Create" class="btn-add">＋ Add Venue</a>
+</div>
+
+<div class="table-card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Venue Name</th>
+                <th>Location</th>
+                <th>Capacity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://placehold.co/80x56/1A1A30/D4AF37?text=Venue" : item.ImageUrl)"
+                             alt="@item.VenueName" class="venue-thumb"
+                             onerror="this.src='https://placehold.co/80x56/1A1A30/D4AF37?text=Venue'" />
+                    </td>
+                    <td><strong>@item.VenueName</strong></td>
+                    <td><span class="text-muted">@item.Location</span></td>
+                    <td>@item.Capacity.ToString("N0") guests</td>
+                    <td>
+                        <div class="btn-action-group">
+                            <a asp-action="Edit"    asp-route-id="@item.VenueID" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.VenueID" class="btn btn-sm btn-outline-secondary">Details</a>
+                            <a asp-action="Delete"  asp-route-id="@item.VenueID" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" style="text-align:center; padding: 3rem; color: var(--text-muted);">
+                        No venues yet. <a asp-action="Create" style="color:var(--gold);">Add the first one →</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,40 @@
+@model EventEase.Models.Booking
+@{ ViewData["Title"] = "Delete Booking"; }
+
+<div class="page-heading">
+    <h1>Delete <span class="accent">Booking</span></h1>
+</div>
+
+<div class="delete-card">
+    <span class="delete-warning-icon">🗑️</span>
+    <h2 style="margin-bottom:0.5rem">Are you sure?</h2>
+    <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.9rem">
+        You are about to permanently delete <strong style="color:var(--text-primary)">Booking #@Model.BookingID</strong>.
+        This action cannot be undone.
+    </p>
+    <div class="details-card" style="margin-bottom:1.5rem; max-width:100%">
+        <div class="detail-grid">
+            <div class="detail-row">
+                <span class="dt">Booking ID</span>
+                <span class="dd"><strong>#@Model.BookingID</strong></span>
+            </div>
+            <div class="detail-row">
+                <span class="dt">Event</span>
+                <span class="dd">@Model.Event?.EventName</span>
+            </div>
+            <div class="detail-row">
+                <span class="dt">Venue</span>
+                <span class="dd">@Model.Venue?.VenueName</span>
+            </div>
+            <div class="detail-row">
+                <span class="dt">Booked On</span>
+                <span class="dd">@Model.BookingDate.ToString("dd MMM yyyy, HH:mm")</span>
+            </div>
+        </div>
+    </div>
+    <form asp-action="Delete" class="d-flex gap-2">
+        <input type="hidden" asp-for="BookingID" />
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

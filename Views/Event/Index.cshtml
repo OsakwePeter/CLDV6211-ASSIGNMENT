@@ -1,0 +1,62 @@
+@model IEnumerable<EventEase.Models.Event>
+@{ ViewData["Title"] = "Events"; }
+
+<div class="page-heading">
+    <div class="page-heading-left">
+        <h1>Events</h1>
+        <p class="page-subtitle">All scheduled &amp; upcoming events</p>
+    </div>
+    <a asp-action="Create" class="btn-add">＋ Add Event</a>
+</div>
+
+<div class="table-card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Date &amp; Time</th>
+                <th>Venue</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong>@item.EventName</strong></td>
+                    <td>
+                        @item.EventDate.ToString("dd MMM yyyy")
+                        <br /><small class="text-muted">@item.EventDate.ToString("HH:mm")</small>
+                    </td>
+                    <td>
+                        @if (item.Venue != null)
+                        {
+                            <span>@item.Venue.VenueName</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted" style="font-style:italic">Unassigned</span>
+                        }
+                    </td>
+                    <td><small class="text-muted">@(item.Description?.Length > 55 ? item.Description.Substring(0, 55) + "…" : item.Description)</small></td>
+                    <td>
+                        <div class="btn-action-group">
+                            <a asp-action="Edit"    asp-route-id="@item.EventID" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.EventID" class="btn btn-sm btn-outline-secondary">Details</a>
+                            <a asp-action="Delete"  asp-route-id="@item.EventID" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" style="text-align:center; padding: 3rem; color: var(--text-muted);">
+                        No events yet. <a asp-action="Create" style="color:var(--gold);">Create the first one →</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

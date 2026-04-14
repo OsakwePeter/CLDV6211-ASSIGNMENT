@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — EventEase</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/EventEase.styles.css" asp-append-version="true" />
+</head>
+<body>
+
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <a class="sidebar-brand" asp-controller="Home" asp-action="Index">
+        <div class="brand-diamond"></div>
+        <span class="brand-text">Event<em>Ease</em></span>
+    </a>
+
+    <nav class="sidebar-nav">
+        <span class="nav-section-label">Navigation</span>
+
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+           asp-controller="Home" asp-action="Index">
+            <span class="nav-icon">⌂</span> Dashboard
+        </a>
+
+        <span class="nav-section-label">Management</span>
+
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Venue" ? "active" : "")"
+           asp-controller="Venue" asp-action="Index">
+            <span class="nav-icon">🏛</span> Venues
+        </a>
+
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Event" ? "active" : "")"
+           asp-controller="Event" asp-action="Index">
+            <span class="nav-icon">📅</span> Events
+        </a>
+
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Booking" ? "active" : "")"
+           asp-controller="Booking" asp-action="Index">
+            <span class="nav-icon">🎟</span> Bookings
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        &copy; @DateTime.Now.Year EventEase &mdash; Admin Platform
+    </div>
+</aside>
+
+<!-- Main content area -->
+<div class="main-content">
+
+    <!-- Top bar -->
+    <div class="topbar">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
+        <div class="topbar-breadcrumb">
+            EventEase &rsaquo; <span>@ViewData["Title"]</span>
+        </div>
+        <span class="topbar-badge">Admin</span>
+    </div>
+
+    <!-- Page body -->
+    <div class="page-body">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger mb-3">@TempData["ErrorMessage"]</div>
+        }
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success mb-3">@TempData["SuccessMessage"]</div>
+        }
+        @RenderBody()
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <span>EventEase Venue Booking System</span>
+        <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+    </footer>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+</script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

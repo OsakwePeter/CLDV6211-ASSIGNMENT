@@ -1,0 +1,42 @@
+@model EventEase.Models.Event
+@{ ViewData["Title"] = "Event Details"; }
+
+<div class="page-heading">
+    <h1>Event <span class="accent">Details</span></h1>
+    <a asp-action="Index" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="details-card">
+    <div class="detail-grid">
+        <div class="detail-header">
+            <span class="detail-header-title">@Model.EventName</span>
+            <span class="badge bg-primary">ID #@Model.EventID</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Event Name</span>
+            <span class="dd">@Model.EventName</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Date &amp; Time</span>
+            <span class="dd">@Model.EventDate.ToString("dd MMMM yyyy, HH:mm")</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Venue</span>
+            <span class="dd">
+                @if (Model.Venue != null)
+                { <span>@Model.Venue.VenueName — @Model.Venue.Location</span> }
+                else
+                { <span class="text-muted" style="font-style:italic">Not assigned</span> }
+            </span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Description</span>
+            <span class="dd" style="white-space:pre-line">@(string.IsNullOrEmpty(Model.Description) ? "—" : Model.Description)</span>
+        </div>
+    </div>
+    <div class="detail-actions">
+        <a asp-action="Edit" asp-route-id="@Model.EventID" class="btn btn-primary">Edit Event</a>
+        <a asp-action="Delete" asp-route-id="@Model.EventID" class="btn btn-outline-danger">Delete</a>
+        <a asp-action="Index" class="btn btn-secondary">All Events</a>
+    </div>
+</div>

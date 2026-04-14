@@ -1,0 +1,53 @@
+@model IEnumerable<EventEase.Models.Booking>
+@{ ViewData["Title"] = "Bookings"; }
+
+<div class="page-heading">
+    <div class="page-heading-left">
+        <h1>Bookings</h1>
+        <p class="page-subtitle">All venue reservations</p>
+    </div>
+    <a asp-action="Create" class="btn-add">＋ New Booking</a>
+</div>
+
+<div class="table-card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Event</th>
+                <th>Venue</th>
+                <th>Booked On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><span class="badge bg-primary">#@item.BookingID</span></td>
+                    <td><strong>@item.Event?.EventName</strong></td>
+                    <td><span class="text-muted">@item.Venue?.VenueName</span></td>
+                    <td>
+                        @item.BookingDate.ToString("dd MMM yyyy")
+                        <br /><small class="text-muted">@item.BookingDate.ToString("HH:mm")</small>
+                    </td>
+                    <td>
+                        <div class="btn-action-group">
+                            <a asp-action="Edit"    asp-route-id="@item.BookingID" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.BookingID" class="btn btn-sm btn-outline-secondary">Details</a>
+                            <a asp-action="Delete"  asp-route-id="@item.BookingID" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" style="text-align:center; padding: 3rem; color: var(--text-muted);">
+                        No bookings yet. <a asp-action="Create" style="color:var(--gold);">Make the first one →</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

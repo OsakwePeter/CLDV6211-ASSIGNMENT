@@ -1,0 +1,41 @@
+@model EventEase.Models.Booking
+@{ ViewData["Title"] = "Booking Details"; }
+
+<div class="page-heading">
+    <h1>Booking <span class="accent">Details</span></h1>
+    <a asp-action="Index" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="details-card">
+    <div class="detail-grid">
+        <div class="detail-header">
+            <span class="detail-header-title">Booking #@Model.BookingID</span>
+            <span class="badge bg-primary">#@Model.BookingID</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Booking ID</span>
+            <span class="dd"><strong>#@Model.BookingID</strong></span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Event</span>
+            <span class="dd">@Model.Event?.EventName</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Venue</span>
+            <span class="dd">@Model.Venue?.VenueName</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Location</span>
+            <span class="dd text-muted">@Model.Venue?.Location</span>
+        </div>
+        <div class="detail-row">
+            <span class="dt">Booked On</span>
+            <span class="dd">@Model.BookingDate.ToString("dd MMMM yyyy, HH:mm")</span>
+        </div>
+    </div>
+    <div class="detail-actions">
+        <a asp-action="Edit" asp-route-id="@Model.BookingID" class="btn btn-primary">Edit Booking</a>
+        <a asp-action="Delete" asp-route-id="@Model.BookingID" class="btn btn-outline-danger">Delete</a>
+        <a asp-action="Index" class="btn btn-secondary">All Bookings</a>
+    </div>
+</div>
