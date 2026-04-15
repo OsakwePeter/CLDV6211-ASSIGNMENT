@@ -37,9 +37,6 @@ namespace EventEase.Controllers
             ModelState.Remove("Event");
             ModelState.Remove("Venue");
 
-            // Set booking date
-            booking.BookingDate = DateTime.Now;
-
             if (ModelState.IsValid)
             {
                 var eventDate = _context.Event.FirstOrDefault(e => e.EventID == booking.EventID)?.EventDate;

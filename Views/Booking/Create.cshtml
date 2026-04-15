@@ -13,6 +13,11 @@
             </select>
             <span asp-validation-for="EventID" class="text-danger small"></span>
         </div>
+        <div class="mb-3">
+            <label asp-for="BookingDate" class="form-label">Booking Date</label>
+            <input asp-for="BookingDate" type="date" class="form-control" />
+            <span asp-validation-for="BookingDate" class="text-danger small"></span>
+        </div>
         <div class="mb-4">
             <label asp-for="VenueID" class="form-label">Venue</label>
             <select asp-for="VenueID" class="form-select"
