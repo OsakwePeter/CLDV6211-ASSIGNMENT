@@ -45,10 +45,18 @@
            asp-controller="Booking" asp-action="Index">
             <span class="nav-icon">🎟</span> Bookings
         </a>
+
+        <span class="nav-section-label">Quick Actions</span>
+
+        <a class="nav-item nav-item-cta"
+           asp-controller="Booking" asp-action="Create">
+            <span class="nav-icon">+</span> New Booking
+        </a>
     </nav>
 
     <div class="sidebar-footer">
-        &copy; @DateTime.Now.Year EventEase &mdash; Admin Platform
+        <a asp-controller="Home" asp-action="Privacy" class="footer-privacy-link">Privacy Policy</a>
+        <span>&copy; @DateTime.Now.Year EventEase &mdash; Admin Platform</span>
     </div>
 </aside>
 

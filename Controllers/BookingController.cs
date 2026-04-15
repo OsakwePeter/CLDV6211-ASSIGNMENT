@@ -33,21 +33,34 @@ namespace EventEase.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Booking booking)
         {
-            var eventDate = _context.Event.FirstOrDefault(e => e.EventID == booking.EventID)?.EventDate;
+            // Remove navigation property validation errors — they are not posted from the form
+            ModelState.Remove("Event");
+            ModelState.Remove("Venue");
 
-            var conflict = await _context.Booking
-                .AnyAsync(b => b.VenueID == booking.VenueID &&
-                               _context.Event.Any(e =>
-                                   e.EventID == b.EventID &&
-                                   e.EventDate == eventDate));
-
-            if (conflict)
-                ModelState.AddModelError("", "This venue is already booked for that date.");
+            // Set booking date
+            booking.BookingDate = DateTime.Now;
 
             if (ModelState.IsValid)
             {
+                var eventDate = _context.Event.FirstOrDefault(e => e.EventID == booking.EventID)?.EventDate;
+
+                var conflict = await _context.Booking
+                    .AnyAsync(b => b.VenueID == booking.VenueID &&
+                                   _context.Event.Any(e =>
+                                       e.EventID == b.EventID &&
+                                       e.EventDate == eventDate));
+
+                if (conflict)
+                {
+                    ModelState.AddModelError("", "This venue is already booked for that date.");
+                    ViewData["Events"] = _context.Event.ToList();
+                    ViewData["Venues"] = _context.Venue.ToList();
+                    return View(booking);
+                }
+
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Booking created successfully.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -74,19 +87,29 @@ namespace EventEase.Controllers
         {
             if (id != booking.BookingID) return NotFound();
 
-            var eventDate = _context.Event.FirstOrDefault(e => e.EventID == booking.EventID)?.EventDate;
-            var conflict = await _context.Booking
-                .AnyAsync(b => b.BookingID != id &&
-                               b.VenueID == booking.VenueID &&
-                               _context.Event.Any(e => e.EventID == b.EventID && e.EventDate == eventDate));
-
-            if (conflict)
-                ModelState.AddModelError("", "This venue is already booked for that date.");
+            // Remove navigation property validation errors
+            ModelState.Remove("Event");
+            ModelState.Remove("Venue");
 
             if (ModelState.IsValid)
             {
+                var eventDate = _context.Event.FirstOrDefault(e => e.EventID == booking.EventID)?.EventDate;
+                var conflict = await _context.Booking
+                    .AnyAsync(b => b.BookingID != id &&
+                                   b.VenueID == booking.VenueID &&
+                                   _context.Event.Any(e => e.EventID == b.EventID && e.EventDate == eventDate));
+
+                if (conflict)
+                {
+                    ModelState.AddModelError("", "This venue is already booked for that date.");
+                    ViewData["Events"] = _context.Event.ToList();
+                    ViewData["Venues"] = _context.Venue.ToList();
+                    return View(booking);
+                }
+
                 _context.Update(booking);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Booking updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
 

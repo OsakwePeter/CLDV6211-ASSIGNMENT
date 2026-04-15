@@ -301,3 +301,31 @@ strong       { font-weight: 600; }
   .form-card, .details-card, .delete-card { max-width: 100%; }
   .detail-grid { grid-template-columns: 120px 1fr; }
 }
+
+/* New Booking CTA nav item */
+.nav-item-cta {
+    margin-top: 0.25rem;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--bg-base) !important;
+    font-weight: 700;
+    border-radius: 8px;
+    letter-spacing: 0.02em;
+    transition: opacity 0.18s, transform 0.18s;
+}
+.nav-item-cta:hover {
+    opacity: 0.88;
+    transform: translateX(2px);
+    color: var(--bg-base) !important;
+}
+.nav-item-cta .nav-icon { font-style: normal; font-size: 1.1rem; }
+
+/* Sidebar footer privacy link */
+.sidebar-footer { flex-direction: column; gap: 0.35rem; text-align: center; }
+.footer-privacy-link {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.73rem;
+    opacity: 0.8;
+    transition: opacity 0.15s;
+}
+.footer-privacy-link:hover { opacity: 1; }

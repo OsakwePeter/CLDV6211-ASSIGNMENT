@@ -1,6 +1,82 @@
-﻿@{
+@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="page-heading">
+    <div class="page-heading-left">
+        <h1>Privacy Policy</h1>
+        <p class="page-subtitle">Last updated: @DateTime.Now.ToString("dd MMMM yyyy")</p>
+    </div>
+</div>
+
+<div class="form-card" style="max-width: 860px;">
+
+    <section class="mb-4">
+        <h4>1. Overview</h4>
+        <p>EventEase (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;the platform&rdquo;) is an internal venue booking and event management system. This Privacy Policy describes how we collect, store, use, and protect the information entered into this platform by authorised administrators.</p>
+    </section>
+
+    <section class="mb-4">
+        <h4>2. Information We Collect</h4>
+        <p>As an administrative platform, EventEase collects and stores the following data:</p>
+        <ul>
+            <li><strong>Venue information</strong> &mdash; name, location, capacity, and optional image URL.</li>
+            <li><strong>Event information</strong> &mdash; event name, date, description, and assigned venue.</li>
+            <li><strong>Booking records</strong> &mdash; event-to-venue assignments and booking timestamps.</li>
+        </ul>
+        <p>No personal data from event attendees or members of the public is collected by this system.</p>
+    </section>
+
+    <section class="mb-4">
+        <h4>3. How We Use Your Information</h4>
+        <p>Information entered into EventEase is used solely to:</p>
+        <ul>
+            <li>Manage and display venue availability and capacity.</li>
+            <li>Schedule and track events across registered venues.</li>
+            <li>Prevent double-bookings by detecting date and venue conflicts.</li>
+            <li>Generate booking records for administrative reference.</li>
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h4>4. Data Storage &amp; Security</h4>
+        <p>All data is stored in a secured database accessible only to authorised personnel. We apply the following safeguards:</p>
+        <ul>
+            <li>Access to this platform is restricted to verified administrators.</li>
+            <li>All data transmission occurs over encrypted connections (HTTPS).</li>
+            <li>Database credentials are stored securely using environment configuration and are never exposed in code.</li>
+            <li>No sensitive personal or financial data is stored within this system.</li>
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h4>5. Data Retention</h4>
+        <p>Booking, event, and venue records are retained for as long as required for operational and auditing purposes. Administrators may delete records at any time via the respective management screens. Deleted records are permanently removed from the database.</p>
+    </section>
+
+    <section class="mb-4">
+        <h4>6. Third-Party Services</h4>
+        <p>EventEase may reference external image URLs for venue photos. These URLs are provided by administrators and hosted on third-party services. We do not control the privacy practices of those external services. No data is automatically transmitted to any third party by this platform.</p>
+    </section>
+
+    <section class="mb-4">
+        <h4>7. Your Rights</h4>
+        <p>As an authorised user of this internal platform, you have the right to:</p>
+        <ul>
+            <li>Access all records stored within the system through the management interfaces.</li>
+            <li>Correct inaccurate data at any time using the Edit functions.</li>
+            <li>Delete any record using the Delete functions within the platform.</li>
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h4>8. Changes to This Policy</h4>
+        <p>This Privacy Policy may be updated periodically. The &ldquo;Last updated&rdquo; date at the top of this page reflects the most recent revision. Continued use of the platform constitutes acceptance of any changes.</p>
+    </section>
+
+    <section>
+        <h4>9. Contact</h4>
+        <p>For questions or concerns regarding this Privacy Policy or the data stored within EventEase, please contact your system administrator.</p>
+    </section>
+
+</div>

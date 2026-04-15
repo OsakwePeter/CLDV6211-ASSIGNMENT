@@ -6,6 +6,7 @@
     <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
         <input type="hidden" asp-for="BookingID" />
+        <input type="hidden" asp-for="BookingDate" />
         <div class="mb-3">
             <label asp-for="EventID" class="form-label">Event</label>
             <select asp-for="EventID" class="form-select"
