@@ -1,54 +1,53 @@
 @model EventEase.Models.Event
 @{ ViewData["Title"] = "Delete Event"; }
 
-<div class="page-heading">
-    <h1>Delete <span class="accent">Event</span></h1>
-</div>
+<h1>Delete Event</h1>
 
 @if ((bool)ViewBag.IsBooked)
 {
-    <div class="delete-card">
-        <span class="delete-warning-icon">⚠️</span>
-        <h2 style="margin-bottom:0.5rem">Cannot Delete Event</h2>
-        <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.9rem">
-            <strong style="color:var(--text-primary)">@Model.EventName</strong> has active bookings.
-            Remove the bookings associated with this event before deleting.
-        </p>
-        <div class="d-flex gap-2">
-            <a asp-action="Index" class="btn btn-secondary">← Back to Events</a>
-            <a asp-controller="Booking" asp-action="Index" class="btn btn-outline-primary">View Bookings</a>
-        </div>
+    <div class="alert alert-danger" role="alert">
+        <strong>✗ Cannot delete this event.</strong>
+        This event has <strong>@ViewBag.BookingCount active booking(s)</strong> associated with it.
+        You must cancel all bookings for this event before it can be deleted.
+        <br /><a asp-controller="Booking" asp-action="Index" class="alert-link">Go to Bookings →</a>
     </div>
 }
 else
 {
-    <div class="delete-card">
-        <span class="delete-warning-icon">🗑️</span>
-        <h2 style="margin-bottom:0.5rem">Are you sure?</h2>
-        <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.9rem">
-            You are about to permanently delete <strong style="color:var(--text-primary)">@Model.EventName</strong>.
-            This action cannot be undone.
-        </p>
-        <div class="details-card" style="margin-bottom:1.5rem; max-width:100%">
-            <div class="detail-grid">
-                <div class="detail-row">
-                    <span class="dt">Event Name</span>
-                    <span class="dd">@Model.EventName</span>
-                </div>
-                <div class="detail-row">
-                    <span class="dt">Date</span>
-                    <span class="dd">@Model.EventDate.ToString("dd MMM yyyy, HH:mm")</span>
-                </div>
-                <div class="detail-row">
-                    <span class="dt">Venue</span>
-                    <span class="dd">@(Model.Venue?.VenueName ?? "Unassigned")</span>
-                </div>
-            </div>
-        </div>
-        <form asp-action="Delete" class="d-flex gap-2">
-            <input type="hidden" asp-for="EventID" />
-            <button type="submit" class="btn btn-danger">Yes, Delete</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-        </form>
+    <div class="alert alert-warning" role="alert">
+        <strong>⚠ Are you sure?</strong> This action cannot be undone.
+        The event image stored in Azurite will also be permanently deleted.
     </div>
 }
+
+<div class="form-card">
+    <dl class="row">
+        <dt class="col-sm-3">Event Name</dt>
+        <dd class="col-sm-9">@Model.EventName</dd>
+        <dt class="col-sm-3">Date &amp; Time</dt>
+        <dd class="col-sm-9">@Model.EventDate.ToString("dd MMM yyyy HH:mm")</dd>
+        <dt class="col-sm-3">Venue</dt>
+        <dd class="col-sm-9">@(Model.Venue?.VenueName ?? "Unassigned")</dd>
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">@(Model.Description ?? "—")</dd>
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <dt class="col-sm-3">Image</dt>
+            <dd class="col-sm-9">
+                <img src="@Model.ImageUrl" alt="@Model.EventName"
+                     style="max-height:120px; border-radius:6px; border:1px solid #ddd;" />
+            </dd>
+        }
+    </dl>
+
+    <div class="d-flex gap-2">
+        @if (!(bool)ViewBag.IsBooked)
+        {
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="EventID" />
+                <button type="submit" class="btn btn-danger">Yes, Delete Event</button>
+            </form>
+        }
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</div>

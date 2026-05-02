@@ -3,30 +3,67 @@
 
 <h1>Edit Event</h1>
 <div class="form-card">
-    <form asp-action="Edit">
+    <form asp-action="Edit" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
         <input type="hidden" asp-for="EventID" />
+        <input type="hidden" asp-for="ImageUrl" />
+
         <div class="mb-3">
-            <label asp-for="EventName" class="form-label">Event Name</label>
+            <label asp-for="EventName" class="form-label">Event Name <span class="text-danger">*</span></label>
             <input asp-for="EventName" class="form-control" />
             <span asp-validation-for="EventName" class="text-danger small"></span>
         </div>
+
         <div class="mb-3">
-            <label asp-for="EventDate" class="form-label">Event Date & Time</label>
+            <label asp-for="EventDate" class="form-label">Date &amp; Time <span class="text-danger">*</span></label>
             <input asp-for="EventDate" class="form-control" type="datetime-local" />
             <span asp-validation-for="EventDate" class="text-danger small"></span>
         </div>
+
         <div class="mb-3">
             <label asp-for="Description" class="form-label">Description</label>
             <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
         </div>
-        <div class="mb-4">
+
+        <div class="mb-3">
             <label asp-for="VenueID" class="form-label">Venue</label>
             <select asp-for="VenueID" class="form-select"
                     asp-items="@(new SelectList(ViewData["Venues"] as IEnumerable<EventEase.Models.Venue>, "VenueID", "VenueName"))">
-                <option value="">-- Select Venue --</option>
+                <option value="">-- No venue assigned --</option>
             </select>
         </div>
+
+        <div class="mb-4">
+            <label class="form-label">
+                Event Image
+                <span class="text-muted fw-normal small">(optional &mdash; max 5 MB, JPG/PNG/WEBP/GIF)</span>
+            </label>
+
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mb-2">
+                    <p class="text-muted small mb-1">Current image (stored in Azurite):</p>
+                    <img src="@Model.ImageUrl" alt="Current event image"
+                         style="max-height: 160px; border-radius: 6px; border: 1px solid #ddd;"
+                         onerror="this.style.display='none'" />
+                </div>
+            }
+
+            <input asp-for="ImageFile" class="form-control" type="file" accept="image/*" />
+            <span asp-validation-for="ImageFile" class="text-danger small"></span>
+            <div class="form-text">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <span>Upload a new file to replace the current image, or leave blank to keep it unchanged.</span>
+                }
+                else
+                {
+                    <span>Image will be stored in Azurite local blob storage (venue-images container).</span>
+                }
+            </div>
+        </div>
+
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Save Changes</button>
             <a asp-action="Index" class="btn btn-secondary">Cancel</a>

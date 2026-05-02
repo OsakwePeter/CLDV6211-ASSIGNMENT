@@ -9,6 +9,29 @@
     <a asp-action="Create" class="btn-add">＋ Add Venue</a>
 </div>
 
+@* ── Alert messages ── *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>✓</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>✗</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["WarningMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>⚠</strong> @TempData["WarningMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="table-card">
     <table class="table">
         <thead>
@@ -25,8 +48,11 @@
             {
                 <tr>
                     <td>
-                        <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://placehold.co/80x56/1A1A30/D4AF37?text=Venue" : item.ImageUrl)"
-                             alt="@item.VenueName" class="venue-thumb"
+                        <img src="@(string.IsNullOrEmpty(item.ImageUrl)
+                                    ? "https://placehold.co/80x56/1A1A30/D4AF37?text=Venue"
+                                    : item.ImageUrl)"
+                             alt="@item.VenueName"
+                             class="venue-thumb"
                              onerror="this.src='https://placehold.co/80x56/1A1A30/D4AF37?text=Venue'" />
                     </td>
                     <td><strong>@item.VenueName</strong></td>

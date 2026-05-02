@@ -9,13 +9,57 @@
     <a asp-action="Create" class="btn-add">＋ New Booking</a>
 </div>
 
+@* ── Alert messages ── *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>✓</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>✗</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["WarningMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>⚠</strong> @TempData["WarningMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@* ── Search bar ── *@
+<div class="table-card" style="margin-bottom: 1rem; padding: 1rem 1.5rem;">
+    <form asp-action="Index" method="get" class="d-flex gap-2 align-items-center flex-wrap">
+        <input type="text"
+               name="searchTerm"
+               class="form-control"
+               placeholder="Search by Booking ID (e.g. 3) or Event Name (e.g. Gala)..."
+               value="@ViewData["SearchTerm"]"
+               style="max-width: 420px;" />
+        <button type="submit" class="btn btn-primary">Search</button>
+        @if (!string.IsNullOrWhiteSpace(ViewData["SearchTerm"]?.ToString()))
+        {
+            <a asp-action="Index" class="btn btn-outline-secondary">✕ Clear</a>
+        }
+    </form>
+</div>
+
+@* ── Bookings table ── *@
 <div class="table-card">
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Event</th>
+                <th>Booking ID</th>
+                <th>Event Name</th>
+                <th>Event Date</th>
                 <th>Venue</th>
+                <th>Location</th>
+                <th>Capacity</th>
                 <th>Booked On</th>
                 <th>Actions</th>
             </tr>
@@ -26,16 +70,23 @@
                 <tr>
                     <td><span class="badge bg-primary">#@item.BookingID</span></td>
                     <td><strong>@item.Event?.EventName</strong></td>
-                    <td><span class="text-muted">@item.Venue?.VenueName</span></td>
+                    <td>
+                        @item.Event?.EventDate.ToString("dd MMM yyyy")
+                        <br /><small class="text-muted">@item.Event?.EventDate.ToString("HH:mm")</small>
+                    </td>
+                    <td><strong>@item.Venue?.VenueName</strong></td>
+                    <td><small class="text-muted">@item.Venue?.Location</small></td>
+                    <td><small>@item.Venue?.Capacity.ToString("N0") pax</small></td>
                     <td>
                         @item.BookingDate.ToString("dd MMM yyyy")
                         <br /><small class="text-muted">@item.BookingDate.ToString("HH:mm")</small>
                     </td>
                     <td>
                         <div class="btn-action-group">
-                            <a asp-action="Edit"    asp-route-id="@item.BookingID" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <a asp-action="Details" asp-route-id="@item.BookingID" class="btn btn-sm btn-outline-secondary">Details</a>
-                            <a asp-action="Delete"  asp-route-id="@item.BookingID" class="btn btn-sm btn-outline-danger">Delete</a>
+                            <a asp-action="Details" asp-route-id="@item.BookingID"
+                               class="btn btn-sm btn-outline-secondary">Details</a>
+                            <a asp-action="Delete"  asp-route-id="@item.BookingID"
+                               class="btn btn-sm btn-outline-danger">Cancel</a>
                         </div>
                     </td>
                 </tr>
@@ -43,11 +94,35 @@
             @if (!Model.Any())
             {
                 <tr>
-                    <td colspan="5" style="text-align:center; padding: 3rem; color: var(--text-muted);">
-                        No bookings yet. <a asp-action="Create" style="color:var(--gold);">Make the first one →</a>
+                    <td colspan="8" style="text-align:center; padding: 3rem; color: var(--text-muted);">
+                        @if (!string.IsNullOrWhiteSpace(ViewData["SearchTerm"]?.ToString()))
+                        {
+                            <span>
+                                No bookings found for "<strong>@ViewData["SearchTerm"]</strong>".
+                                <a asp-action="Index" style="color:var(--gold);">View all bookings →</a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                No bookings yet.
+                                <a asp-action="Create" style="color:var(--gold);">Make the first one →</a>
+                            </span>
+                        }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+    @if (Model.Any())
+    {
+        <div class="px-3 pb-2 text-muted" style="font-size: 0.85rem;">
+            Showing <strong>@Model.Count()</strong> booking(s)
+            @if (!string.IsNullOrWhiteSpace(ViewData["SearchTerm"]?.ToString()))
+            {
+                <span>matching "<strong>@ViewData["SearchTerm"]</strong>"</span>
+            }
+        </div>
+    }
 </div>

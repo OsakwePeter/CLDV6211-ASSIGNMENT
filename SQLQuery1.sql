@@ -1,0 +1,1 @@
+﻿ALTER TABLE [Event] ADD [ImageUrl] NVARCHAR(MAX) NULL;

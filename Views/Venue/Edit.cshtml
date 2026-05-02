@@ -3,28 +3,59 @@
 
 <h1>Edit Venue</h1>
 <div class="form-card">
-    <form asp-action="Edit">
+    <form asp-action="Edit" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
         <input type="hidden" asp-for="VenueID" />
+        <input type="hidden" asp-for="ImageUrl" />
+
         <div class="mb-3">
-            <label asp-for="VenueName" class="form-label">Venue Name</label>
+            <label asp-for="VenueName" class="form-label">Venue Name <span class="text-danger">*</span></label>
             <input asp-for="VenueName" class="form-control" />
             <span asp-validation-for="VenueName" class="text-danger small"></span>
         </div>
+
         <div class="mb-3">
-            <label asp-for="Location" class="form-label">Location</label>
+            <label asp-for="Location" class="form-label">Location <span class="text-danger">*</span></label>
             <input asp-for="Location" class="form-control" />
             <span asp-validation-for="Location" class="text-danger small"></span>
         </div>
+
         <div class="mb-3">
-            <label asp-for="Capacity" class="form-label">Capacity</label>
-            <input asp-for="Capacity" class="form-control" />
+            <label asp-for="Capacity" class="form-label">Capacity <span class="text-danger">*</span></label>
+            <input asp-for="Capacity" class="form-control" type="number" min="1" />
             <span asp-validation-for="Capacity" class="text-danger small"></span>
         </div>
+
         <div class="mb-4">
-            <label asp-for="ImageUrl" class="form-label">Image URL</label>
-            <input asp-for="ImageUrl" class="form-control" />
+            <label class="form-label">
+                Venue Image
+                <span class="text-muted fw-normal small">(optional &mdash; max 5 MB, JPG/PNG/WEBP/GIF)</span>
+            </label>
+
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mb-2">
+                    <p class="text-muted small mb-1">Current image (stored in Azurite):</p>
+                    <img src="@Model.ImageUrl" alt="Current venue image"
+                         style="max-height: 160px; border-radius: 6px; border: 1px solid #ddd;"
+                         onerror="this.style.display='none'" />
+                </div>
+            }
+
+            <input asp-for="ImageFile" class="form-control" type="file" accept="image/*" />
+            <span asp-validation-for="ImageFile" class="text-danger small"></span>
+            <div class="form-text">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <span>Upload a new file to replace the current image, or leave blank to keep it unchanged.</span>
+                }
+                else
+                {
+                    <span>Image will be stored in Azurite local blob storage (venue-images container).</span>
+                }
+            </div>
         </div>
+
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Save Changes</button>
             <a asp-action="Index" class="btn btn-secondary">Cancel</a>

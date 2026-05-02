@@ -9,10 +9,34 @@
     <a asp-action="Create" class="btn-add">＋ Add Event</a>
 </div>
 
+@* ── Alert messages ── *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>✓</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>✗</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["WarningMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>⚠</strong> @TempData["WarningMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="table-card">
     <table class="table">
         <thead>
             <tr>
+                <th>Image</th>
                 <th>Event Name</th>
                 <th>Date &amp; Time</th>
                 <th>Venue</th>
@@ -24,6 +48,14 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>
+                        <img src="@(string.IsNullOrEmpty(item.ImageUrl)
+                                    ? "https://placehold.co/80x56/1A1A30/D4AF37?text=Event"
+                                    : item.ImageUrl)"
+                             alt="@item.EventName"
+                             class="venue-thumb"
+                             onerror="this.src='https://placehold.co/80x56/1A1A30/D4AF37?text=Event'" />
+                    </td>
                     <td><strong>@item.EventName</strong></td>
                     <td>
                         @item.EventDate.ToString("dd MMM yyyy")
@@ -36,10 +68,16 @@
                         }
                         else
                         {
-                            <span class="text-muted" style="font-style:italic">Unassigned</span>
+                            <span class="text-muted fst-italic">Unassigned</span>
                         }
                     </td>
-                    <td><small class="text-muted">@(item.Description?.Length > 55 ? item.Description.Substring(0, 55) + "…" : item.Description)</small></td>
+                    <td>
+                        <small class="text-muted">
+                            @(item.Description?.Length > 55
+                                ? item.Description.Substring(0, 55) + "…"
+                                : item.Description)
+                        </small>
+                    </td>
                     <td>
                         <div class="btn-action-group">
                             <a asp-action="Edit"    asp-route-id="@item.EventID" class="btn btn-sm btn-outline-primary">Edit</a>
@@ -52,7 +90,7 @@
             @if (!Model.Any())
             {
                 <tr>
-                    <td colspan="5" style="text-align:center; padding: 3rem; color: var(--text-muted);">
+                    <td colspan="6" style="text-align:center; padding: 3rem; color: var(--text-muted);">
                         No events yet. <a asp-action="Create" style="color:var(--gold);">Create the first one →</a>
                     </td>
                 </tr>
